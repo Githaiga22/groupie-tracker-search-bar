@@ -13,9 +13,17 @@
       
     </header>
     <div class="search-container">
-  <input type="text" class="search-input" placeholder="Search...">
-  <button class="search-button"><img width="30rem" height="30rem" src="/static/searchicon.png" alt="🔍"></button>
-</div>
+        <div class="search-wrapper">
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search artists, locations, or dates..."
+            autocomplete="off"
+          >
+          <div id="searchSuggestions" class="search-suggestions"></div>
+        </div>
+      </div>
 
     <ul class="ul">
         {{range .}}
@@ -39,8 +47,7 @@
         </li>
         {{end}}
     </ul>
-    
-
+    <script src="/static/script.js"></script> 
     <script>
         function submitForm(id,endpoint) {
             // Get form using the unique id
