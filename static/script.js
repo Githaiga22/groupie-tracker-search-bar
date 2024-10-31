@@ -1,4 +1,3 @@
-// Add this to a new file: static/js/search.js
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const suggestionsContainer = document.getElementById('searchSuggestions');
@@ -6,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show/hide suggestions container
     searchInput.addEventListener('focus', () => {
-        if (searchInput.value.length >= 2) {
+        if (searchInput.value.length > 0) {
             suggestionsContainer.style.display = 'block';
         }
     });
@@ -22,14 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
         clearTimeout(debounceTimer);
         const query = this.value.trim();
         
-        if (query.length < 2) {
+        if (query.length === 0) {
             suggestionsContainer.style.display = 'none';
             return;
         }
 
         debounceTimer = setTimeout(() => {
             fetchSuggestions(query);
-        }, 300);
+        }, 150); // Reduced debounce time
     });
 
     async function fetchSuggestions(query) {
@@ -50,28 +49,36 @@ document.addEventListener('DOMContentLoaded', function() {
             suggestionsContainer.style.display = 'none';
             return;
         }
-
+    
         suggestionsContainer.innerHTML = '';
         
         results.forEach(result => {
             const div = document.createElement('div');
             div.className = 'suggestion-item';
+            // Format location before displaying
+            function formatLocation(location) {
+                return location
+                    .replace(/[_]/g, ' ')  
+                    .replace(/[-]/g, ' , ')              // Replace underscores and hyphens with space
+                    .split(' ')                           // Split into words
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+                    .join(' ');                          // Join words back into a single string
+            }
             
+            // Display both the main text and context if available
             div.innerHTML = `
                 <span class="suggestion-type">${result.type}</span>
-                <span>${result.text}</span>
+                ${result.context ? `<span class="suggestion-type">${result.context}</span>` : ''}
+                <span>${formatLocation(result.text)}</span>
+                
             `;
             
             div.addEventListener('click', () => {
-                if (result.type === 'artist') {
-                    window.location.href = `/artist?id=${result.id}`;
-                } else if (result.type === 'location') {
+                if (result.type === 'location') {
                     window.location.href = `/locations?id=${result.id}`;
-                } else if (result.type === 'date') {
-                    window.location.href = `/dates?id=${result.id}`;
                 }
             });
-
+    
             suggestionsContainer.appendChild(div);
         });
         
