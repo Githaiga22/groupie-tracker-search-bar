@@ -73,8 +73,8 @@ func searchCreations(query string) ([]SearchResult, error) {
             results = append(results, SearchResult{
                 Type: "creation",
                 ID:   artist.Id,
-                Text: strconv.Itoa(artist.CreationDate),
-                Context: artist.Name,
+                Text: artist.Name,
+                Context: strconv.Itoa(artist.CreationDate),
             })
         }
         
@@ -86,26 +86,27 @@ func searchCreations(query string) ([]SearchResult, error) {
     return results, nil
 }
 
-// // searchMembers searches for artists by members
-// func searchMembers(query string) ([]SearchResult, error) {
-//     var results []SearchResult
+// searchFirstAlbum searches for artists by First Album
+func searchFirstAlbum(query string) ([]SearchResult, error) {
+    var results []SearchResult
     
-//     for _, artist := range AllArtistInfo {
-//         if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
-//             results = append(results, SearchResult{
-//                 Type: "artist",
-//                 ID:   artist.Id,
-//                 Text: artist.Name,
-//             })
-//         }
+    for _, artist := range AllArtistInfo {
+        if strings.Contains(artist.FirstAlbum, strings.ToLower(query)) {
+            results = append(results, SearchResult{
+                Type: "First Album",
+                ID:   artist.Id,
+                Text: artist.Name,
+                Context: artist.FirstAlbum,
+            })
+        }
         
-//         if len(results) >= 10 {
-//             break
-//         }
-//     }
+        if len(results) >= 10 {
+            break
+        }
+    }
     
-//     return results, nil
-// }
+    return results, nil
+}
 
 
 // searchLocations searches in both locations and relations endpoints
@@ -132,8 +133,8 @@ func searchLocations(query string) ([]SearchResult, error) {
                 allResults = append(allResults, SearchResult{
                     Type:    "location",
                     ID:      relation.Id,
-                    Text:    location,
-                    Context: artistName,
+                    Text:    artistName,
+                    Context: location,
                 })
             }
         }
@@ -168,8 +169,8 @@ func searchLocations(query string) ([]SearchResult, error) {
                     allResults = append(allResults, SearchResult{
                         Type:    "location",
                         ID:      location.ArtistId,
-                        Text:    loc,
-                        Context: artistName,
+                        Text: artistName   ,
+                        Context: loc,
                     })
                 }
             }
@@ -182,32 +183,6 @@ func searchLocations(query string) ([]SearchResult, error) {
     }
 
     return allResults, nil
-}
-
-// searchDates searches for dates in artist's locations
-func searchDates(query string) ([]SearchResult, error) {
-    var results []SearchResult
-    
-    for _, artist := range AllArtistInfo {
-        for location, dates := range artist.DateAndLocation {
-            for _, date := range dates {
-                if strings.Contains(strings.ToLower(date), strings.ToLower(query)) {
-                    results = append(results, SearchResult{
-                        Type:    "date",
-                        ID:      artist.Id,
-                        Text:    date,
-                        Context: location,
-                    })
-                }
-            }
-        }
-        
-        if len(results) >= 10 {
-            break
-        }
-    }
-    
-    return results, nil
 }
 
 // SearchHandler handles the search endpoint
@@ -234,6 +209,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
         searchArtists,
         searchLocations,
         searchCreations,
+        searchFirstAlbum,
     }
     
     // Perform all searches while respecting the result limit
