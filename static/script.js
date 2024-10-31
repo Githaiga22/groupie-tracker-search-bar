@@ -74,9 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             div.addEventListener('click', () => {
-                if (result.type === 'location') {
-                    window.location.href = `/locations?id=${result.id}`;
-                }
+                    window.location.href = `/artist?id=${result.id}`
             });
     
             suggestionsContainer.appendChild(div);
