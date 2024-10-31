@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "net/http"
     "strings"
+    "strconv"
     model "tracker/models"
 )
 
@@ -33,6 +34,15 @@ func getArtistNameById(id int) string {
     return ""
 }
 
+// getArtistNameById returns artist name for a given ID
+func getArtistCreationbyId(id int) string {
+    for _, artist := range AllArtistInfo {
+        if artist.Id == id {
+            return strconv.Itoa(artist.CreationDate)
+        }
+    }
+    return ""
+}
 // searchArtists searches for artists by name
 func searchArtists(query string) ([]SearchResult, error) {
     var results []SearchResult
@@ -53,6 +63,50 @@ func searchArtists(query string) ([]SearchResult, error) {
     
     return results, nil
 }
+
+// searchCreations searches for creation dates
+func searchCreations(query string) ([]SearchResult, error) {
+    var results []SearchResult
+    
+    for _, artist := range AllArtistInfo {
+        if strings.Contains(strconv.Itoa(artist.CreationDate), strings.ToLower(query)) {
+            results = append(results, SearchResult{
+                Type: "creation",
+                ID:   artist.Id,
+                Text: strconv.Itoa(artist.CreationDate),
+                Context: artist.Name,
+            })
+        }
+        
+        if len(results) >= 10 {
+            break
+        }
+    }
+    
+    return results, nil
+}
+
+// // searchMembers searches for artists by members
+// func searchMembers(query string) ([]SearchResult, error) {
+//     var results []SearchResult
+    
+//     for _, artist := range AllArtistInfo {
+//         if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
+//             results = append(results, SearchResult{
+//                 Type: "artist",
+//                 ID:   artist.Id,
+//                 Text: artist.Name,
+//             })
+//         }
+        
+//         if len(results) >= 10 {
+//             break
+//         }
+//     }
+    
+//     return results, nil
+// }
+
 
 // searchLocations searches in both locations and relations endpoints
 func searchLocations(query string) ([]SearchResult, error) {
@@ -179,7 +233,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
     searchFuncs := []searchFunction{
         searchArtists,
         searchLocations,
-        searchDates,
+        searchCreations,
     }
     
     // Perform all searches while respecting the result limit
