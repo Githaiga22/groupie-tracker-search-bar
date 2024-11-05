@@ -56,7 +56,7 @@ func Test_searchArtists(t *testing.T) {
 			Members: []string{"John", "Paul", "George", "Ringo"},
 			CreationDate: 1960, 
 			FirstAlbum: "Please Please Me",
-			// You can fill in other fields or leave them empty if not needed
+		
 		},
 		{
 			Id: 2, 
