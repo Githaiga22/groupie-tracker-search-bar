@@ -126,7 +126,7 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		wrongMethodHandler(w)
 		return
-	}  
+	}
 
 	id := r.URL.Query().Get("id")
 
@@ -144,18 +144,14 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	idNum -= 1
 
-
-
 	if len(AllArtistInfo) == 0 {
 		r.URL.Path = "/"
 		r.Method = http.MethodGet
 		HomepageHandler(w, r)
-		log.Println("here here")
 		return
 	}
 
 	AllArtistInfo[idNum].DateAndLocation = datesAndConcerts
-
 
 	Data := AllArtistInfo[idNum]
 
@@ -226,8 +222,8 @@ func HomepageHandler(w http.ResponseWriter, r *http.Request) {
 
 func renderErrorPage(w http.ResponseWriter, statusCode int, title, message string) {
 	w.WriteHeader(statusCode)
-	tmpl,err := template.ParseFiles("templates/error.html")
-	if err != nil{
+	tmpl, err := template.ParseFiles("templates/error.html")
+	if err != nil {
 		log.Println("Error page parsing error:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
