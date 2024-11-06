@@ -56,7 +56,7 @@ Contributions are welcome! If you'd like to contribute to Groupie Tracker, pleas
 
 1. Fork the repository:
 ```bash
- git fork https://github.com/Githaiga22/groupie-tracker.git
+ git forkhttps://learn.zone01kisumu.ke/git/allkamau/groupie-tracker-search-bar.git
  ```
 2. Create a new branch:
 ```bash
