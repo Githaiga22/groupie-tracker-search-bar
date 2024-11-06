@@ -23,7 +23,7 @@ The Groupie-Tracker-Search-bar project is intended to build a web-based program 
 2. Search Bar: Case-insensitive search across various fields, with suggestions provided in real time.
 3. Typing Suggestions: Each suggestion categorizes the result type (e.g., artist, member).
 4. HTML and JavaScript: Handling events and dynamically displaying search suggestions.
-5. JSON Integration: Using JSON for artist data storage.
+
 ### Technologies Used:
 - Frontend: HTML, CSS, JavaScript
 - Backend: Go (Golang)
@@ -37,7 +37,7 @@ The Groupie-Tracker-Search-bar project is intended to build a web-based program 
 ### Installation
 1. Clone the repository: 
 ```bash
-git clone https://learn.zone01kisumu.ke/git/allkamau/groupie-tracker.git
+git clone https://learn.zone01kisumu.ke/git/allkamau/groupie-tracker-search-bar.git
 ```
 2. Navigate to the project directory:
 ```bash
