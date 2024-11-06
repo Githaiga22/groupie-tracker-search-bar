@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"testing"
-	"tracker/models" 
+	"tracker/models"
 )
 
 func Test_getArtistNameById(t *testing.T) {
@@ -51,29 +51,28 @@ func Test_searchArtists(t *testing.T) {
 	// Set up test data
 	AllArtistInfo = []models.Data{
 		{
-			Id: 1, 
-			Name: "The Beatles", 
-			Members: []string{"John", "Paul", "George", "Ringo"},
-			CreationDate: 1960, 
-			FirstAlbum: "Please Please Me",
-		
+			Id:           1,
+			Name:         "The Beatles",
+			Members:      []string{"John", "Paul", "George", "Ringo"},
+			CreationDate: 1960,
+			FirstAlbum:   "Please Please Me",
 		},
 		{
-			Id: 2, 
-			Name: "Queen", 
-			Members: []string{"Freddie", "Brian", "Roger", "John"},
-			CreationDate: 1970, 
-			FirstAlbum: "Queen",
+			Id:           2,
+			Name:         "Queen",
+			Members:      []string{"Freddie", "Brian", "Roger", "John"},
+			CreationDate: 1970,
+			FirstAlbum:   "Queen",
 		},
 		{
-			Id: 3, 
-			Name: "Pink Floyd", 
-			Members: []string{"Roger", "David", "Nick", "Richard"},
-			CreationDate: 1965, 
-			FirstAlbum: "The Piper at the Gates of Dawn",
+			Id:           3,
+			Name:         "Pink Floyd",
+			Members:      []string{"Roger", "David", "Nick", "Richard"},
+			CreationDate: 1965,
+			FirstAlbum:   "The Piper at the Gates of Dawn",
 		},
 	}
-	
+
 	tests := []struct {
 		name    string
 		query   string
