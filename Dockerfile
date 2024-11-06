@@ -1,28 +1,38 @@
-# Step 1: Specify the base image
+# Step 1: Use the official Go image as a base image
 FROM golang:1.22.2 AS builder
 
-# Step 2: Set the working directory inside the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy the Go modules files and download dependencies
-COPY go.mod go.sum ./
+# Copy go.mod and go.sum if it exists, and download dependencies
+COPY go.mod ./
+
 RUN go mod download
 
-# Step 4: Copy the entire project into the container's working directory
+# Copy the rest of the application code (source code)
 COPY . .
 
-# Step 5: Build the application
-RUN go build -o groupie-tracker-search-bar .
+# Build the Go application
+RUN go build -o main .
 
-# Step 6: Use a lightweight base image for running the application
-FROM gcr.io/distroless/base-debian11
+# Step 2: Use Alpine as the base image for the final image
+FROM alpine:latest
 
-# Step 7: Set the working directory and copy the built binary from the builder stage
+# Install necessary dependencies for running Go apps in Alpine
+RUN apk --no-cache add ca-certificates libc6-compat
+
+# Set the working directory to /app to match the application structure
 WORKDIR /app
-COPY --from=builder /app/groupie-tracker-search-bar .
 
-# Step 8: Expose the port your application will run on
+# Copy the built application from the builder stage
+COPY --from=builder /app/main /app/main
+
+# Copy the templates and static files from the builder stage into appropriate paths
+COPY --from=builder /app/templates /app/templates
+COPY --from=builder /app/static /app/static
+
+# Expose the port the app runs on
 EXPOSE 8081
 
-# Step 9: Set the entrypoint to run the application
-CMD ["./groupie-tracker-search-bar"]
+# Command to run the executable
+CMD ["/app/main"]
