@@ -152,10 +152,10 @@ func ArtistHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	AllArtistInfo[idNum].DateAndLocation = datesAndConcerts
-
+	// fetch artists details
 	Data := AllArtistInfo[idNum]
 
-	// fetch artists details
+	
 	tmpl, err := template.ParseFiles("templates/artistPage.html")
 	if err != nil {
 		InternalServerHandler(w)

@@ -12,7 +12,7 @@ import (
 func main() {
 
 	args := os.Args
-	if len(args) > 1 {
+	if len(args) != 1 {
 		fmt.Println("Error: Usage: go run .")
 		return
 	}
@@ -21,7 +21,6 @@ func main() {
 	http.HandleFunc("/artist", handlers.ArtistHandler)
 	http.HandleFunc("/dates", handlers.DateHandler)
 	http.HandleFunc("/locations", handlers.LocationHandler)
-	// In main.go
 	http.HandleFunc("/search", handlers.SearchHandler)
 	// serve the static files
 	fs := http.FileServer(http.Dir("static"))
